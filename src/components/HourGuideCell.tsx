@@ -31,7 +31,7 @@ export const HourGuideCell = ({
   )
 
   return (
-    <TouchableWithoutFeedback onPress={() => onPress(date.hour(hour).minute(0))}>
+    <TouchableWithoutFeedback onPress={() => onPress(date.hour(~~hour).minute(hour % 1 ? 30 : 0))}>
       <View
         style={[
           u['border-l'],
