@@ -19,6 +19,7 @@ export const Draggable = (props: any) => {
   const pan: currentType = useRef(new Animated.ValueXY()).current
   const cellWidth = React.useContext(widthContext)
   const cellHeight = 1000 / 24
+  const previousChangeKey = useRef<string>(`0-0-${props.event.title}`)
 
   const panResponder = useRef(
     PanResponder.create({
@@ -29,9 +30,23 @@ export const Draggable = (props: any) => {
           y: pan.y,
         })
       },
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
-        useNativeDriver: false,
-      }),
+      onPanResponderMove: (event, gestureState) => {
+        const xUnit = (cellWidth - 50) / 4.5
+        const xDif = gestureState.moveX - gestureState.x0
+        const xUnits = Math.floor(xDif / xUnit + 0.5)
+
+        const yUnit = cellHeight
+        const yDif = gestureState.moveY - gestureState.y0
+        var yUnits = Math.floor((4 * yDif) / yUnit + 0.5)
+        yUnits = yUnits / 4
+        yUnits = ~~yUnits / 2
+        const change = { day: xUnits, hour: yUnits, event: props.event }
+        // console.log(previousChangeKey.current === `${change.day}-${change.hour}-${props.event}`, previousChangeKey.current, `${change.day}-${change.hour}-${props.event}`)
+        if (previousChangeKey.current === `${change.day}-${change.hour}-${props.event}`) return
+        previousChangeKey.current = `${change.day}-${change.hour}-${props.event}`
+        props.moveCallBack(change)
+        pan.setValue({ x: gestureState.dx, y: gestureState.dy })
+      },
       onPanResponderRelease: (_e, gestureState) => {
         const xUnit = (cellWidth - 50) / 4.5
         const xDif = gestureState.moveX - gestureState.x0
@@ -46,7 +61,6 @@ export const Draggable = (props: any) => {
         pan.setValue({ x: xUnits * xUnit, y: yUnit * yUnits })
         pan.flattenOffset()
         const change = { day: xUnits, hour: yUnits, event: props.event }
-        console.log({ change })
         props.moveCallBack(change)
       },
     }),
@@ -73,12 +87,12 @@ export const Draggable = (props: any) => {
     <Animated.View
       style={[
         (props.touchableOpacityProps && props.touchableOpacityProps.style) || styles.box,
-        // {
-        //   marginLeft: leftCellCss + marginLeftInCell + 3,
-        //   width: widthCss,
-        //   transform: [{ translateX: pan.x }, { translateY: pan.y }],
-        //   backgroundColor: props.event.color,
-        // },
+        {
+          //   marginLeft: leftCellCss + marginLeftInCell + 3,
+          //   width: widthCss,
+          transform: [{ translateX: pan.x }, { translateY: pan.y }],
+          //   backgroundColor: props.event.color,
+        },
       ]}
       {...panResponder.panHandlers}
     >
