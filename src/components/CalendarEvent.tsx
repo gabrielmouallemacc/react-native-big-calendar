@@ -27,6 +27,9 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   overlapOffset?: number
   renderEvent?: EventRenderer<T>
   ampm: boolean
+  moveCallBack: any
+  events: any[]
+  dateRange: dayjs.Dayjs[]
 }
 
 function _CalendarEvent<T extends ICalendarEventBase>({
@@ -39,6 +42,9 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   overlapOffset = OVERLAP_OFFSET,
   renderEvent,
   ampm,
+  moveCallBack,
+  events,
+  dateRange,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -76,6 +82,9 @@ function _CalendarEvent<T extends ICalendarEventBase>({
       ampm={ampm}
       touchableOpacityProps={touchableOpacityProps}
       textColor={textColor}
+      moveCallBack={moveCallBack}
+      events={events}
+      dateRange={dateRange}
     />
   )
 }
