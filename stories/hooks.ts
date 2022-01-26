@@ -20,5 +20,6 @@ export function useEvents(defaultEvents: ICalendarEventBase[]) {
   return {
     events,
     addEvent,
+    setEvents,
   }
 }

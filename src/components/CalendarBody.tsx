@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
   },
 })
 
+export const widthContext = React.createContext(400)
+
 interface CalendarBodyProps<T extends ICalendarEventBase> {
   cellHeight: number
   containerHeight: number
@@ -54,6 +56,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
+  moveCallBack: any
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -76,9 +79,12 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponent = null,
   headerComponentStyle = {},
   hourStyle = {},
+  moveCallBack,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
+  const layoutProps = React.useRef({ x: 0, y: 0, width: 500, height: 1000 })
+  const [calculatedWidth, setCalculatedWidth] = React.useState(400)
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -109,6 +115,10 @@ function _CalendarBody<T extends ICalendarEventBase>({
     [onPressCell],
   )
 
+  const setViewOffset = (x: number, y: number, width: number, height: number) => {
+    layoutProps.current = { x, y, width, height }
+  }
+
   const _renderMappedEvent = (event: T) => (
     <CalendarEvent
       key={`${event.start}${event.title}${event.end}`}
@@ -121,15 +131,23 @@ function _CalendarBody<T extends ICalendarEventBase>({
       overlapOffset={overlapOffset}
       renderEvent={renderEvent}
       ampm={ampm}
+      moveCallBack={moveCallBack}
+      events={events}
+      dateRange={dateRange}
     />
   )
 
   const theme = useTheme()
 
   return (
-    <React.Fragment>
+    <widthContext.Provider value={calculatedWidth}>
       {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
       <ScrollView
+        onLayout={(event) => {
+          var { x, y, width, height } = event.nativeEvent.layout
+          setViewOffset(x, y, width, height)
+          setCalculatedWidth(width)
+        }}
         style={[
           {
             height: containerHeight - cellHeight * 3,
@@ -225,7 +243,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
           ))}
         </View>
       </ScrollView>
-    </React.Fragment>
+    </widthContext.Provider>
   )
 }
 
