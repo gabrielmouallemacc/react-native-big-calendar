@@ -33,7 +33,7 @@ export const Draggable = (props: any) => {
         useNativeDriver: false,
       }),
       onPanResponderRelease: (_e, gestureState) => {
-        const xUnit = (cellWidth - 50) / 7
+        const xUnit = (cellWidth - 50) / 4.5
         const xDif = gestureState.moveX - gestureState.x0
         const xUnits = Math.floor(xDif / xUnit + 0.5)
 
@@ -41,6 +41,7 @@ export const Draggable = (props: any) => {
         const yDif = gestureState.moveY - gestureState.y0
         var yUnits = Math.floor((4 * yDif) / yUnit + 0.5)
         yUnits = yUnits / 4
+        yUnits = ~~yUnits / 2
 
         pan.setValue({ x: xUnits * xUnit, y: yUnit * yUnits })
         pan.flattenOffset()
