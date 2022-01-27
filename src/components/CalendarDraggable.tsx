@@ -20,9 +20,6 @@ export const Draggable = (props: any) => {
 
   const [opacity, setOpacity] = useState<number>(1)
 
-  var viewRef = useRef<View>()
-  var pageCoords = useRef({ x: 0, y: 0 }).current
-
   const previousChangeKey = useRef<string>(`0-0-${props.event.title}`)
 
   const getChangedInformation = (gestureState: PanResponderGestureState) => {
@@ -58,14 +55,6 @@ export const Draggable = (props: any) => {
 
   return (
     <Animated.View
-      ref={viewRef}
-      onLayout={() => {
-        if (viewRef.current) {
-          viewRef.current.measure((x, y, width, height, pageX, pageY) => {
-            pageCoords = { x: pageX + width / 2, y: pageY + height / 2 }
-          })
-        }
-      }}
       style={[
         (props.touchableOpacityProps && props.touchableOpacityProps.style) || styles.box,
         {
