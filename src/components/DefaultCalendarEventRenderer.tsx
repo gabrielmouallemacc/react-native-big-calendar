@@ -4,7 +4,6 @@ import { Text, TouchableOpacity } from 'react-native'
 
 import { CalendarTouchableOpacityProps, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
-import { formatStartEnd } from '../utils'
 import { Draggable } from './CalendarDraggable'
 
 interface DefaultCalendarEventRendererProps<T extends ICalendarEventBase> {
@@ -23,13 +22,11 @@ export function DefaultCalendarEventRenderer<T extends ICalendarEventBase>({
   event,
   showTime = true,
   textColor,
-  ampm,
   moveCallBack,
   events,
   dateRange,
 }: DefaultCalendarEventRendererProps<T>) {
   const theme = useTheme()
-  const eventTimeStyle = { fontSize: theme.typography.xs.fontSize, color: textColor }
   const eventTitleStyle = { fontSize: theme.typography.sm.fontSize, color: textColor }
 
   return (
