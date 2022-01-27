@@ -204,6 +204,15 @@ function _CalendarBody<T extends ICalendarEventBase>({
               />
             ))}
           </View>
+          {!hideNowIndicator && (
+            <View
+              style={[
+                styles.nowIndicator,
+                { backgroundColor: theme.palette.nowIndicator },
+                { top: `${getRelativeTopInDay(now)}%` },
+              ]}
+            />
+          )}
           {dateRange.map((date) => (
             <View style={[u['flex-1'], u['overflow-hidden']]} key={date.toString()}>
               {hours.map((hour, index) => (
@@ -257,16 +266,6 @@ function _CalendarBody<T extends ICalendarEventBase>({
                   end: dayjs(event.end).endOf('day'),
                 }))
                 .map(_renderMappedEvent)}
-
-              {isToday(date) && !hideNowIndicator && (
-                <View
-                  style={[
-                    styles.nowIndicator,
-                    { backgroundColor: theme.palette.nowIndicator },
-                    { top: `${getRelativeTopInDay(now)}%` },
-                  ]}
-                />
-              )}
             </View>
           ))}
         </View>
