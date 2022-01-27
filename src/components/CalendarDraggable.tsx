@@ -1,7 +1,6 @@
-import React, { useRef } from 'react'
-import { Animated, PanResponder, StyleSheet } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { Animated, PanResponder, PanResponderGestureState, StyleSheet, View } from 'react-native'
 
-import { getCountOfEventsAtEvent, getOrderOfEvent } from '../utils'
 import { widthContext } from './CalendarBody'
 
 export interface panXY {
@@ -16,82 +15,61 @@ export interface currentType {
 }
 
 export const Draggable = (props: any) => {
-  const pan: currentType = useRef(new Animated.ValueXY()).current
   const cellWidth = React.useContext(widthContext)
   const cellHeight = 1000 / 24
+
+  const [opacity, setOpacity] = useState<number>(1)
+
+  var viewRef = useRef<View>()
+  var pageCoords = useRef({ x: 0, y: 0 }).current
+
   const previousChangeKey = useRef<string>(`0-0-${props.event.title}`)
+
+  const getChangedInformation = (gestureState: PanResponderGestureState) => {
+    const xUnit = (cellWidth - 50) / 3.5
+    const xDif = gestureState.moveX - gestureState.x0
+    const xUnits = Math.floor(xDif / xUnit + 0.5)
+
+    const yUnit = cellHeight
+    const yDif = gestureState.moveY - gestureState.y0
+    var yUnits = Math.floor((4 * yDif) / yUnit + 0.5)
+    yUnits = yUnits / 4
+    yUnits = ~~yUnits / 2
+    return { day: xUnits, hour: yUnits, event: props.event }
+  }
 
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: (_e, _gestureState) => {
-        pan.setOffset({
-          x: pan.x,
-          y: pan.y,
-        })
-      },
-      onPanResponderMove: (event, gestureState) => {
-        const xUnit = (cellWidth - 50) / 4.5
-        const xDif = gestureState.moveX - gestureState.x0
-        const xUnits = Math.floor(xDif / xUnit + 0.5)
-
-        const yUnit = cellHeight
-        const yDif = gestureState.moveY - gestureState.y0
-        var yUnits = Math.floor((4 * yDif) / yUnit + 0.5)
-        yUnits = yUnits / 4
-        yUnits = ~~yUnits / 2
-        const change = { day: xUnits, hour: yUnits, event: props.event }
-        // console.log(previousChangeKey.current === `${change.day}-${change.hour}-${props.event}`, previousChangeKey.current, `${change.day}-${change.hour}-${props.event}`)
+      onPanResponderMove: (_e, gestureState) => {
+        setOpacity(0.25)
+        const change = getChangedInformation(gestureState)
         if (previousChangeKey.current === `${change.day}-${change.hour}-${props.event}`) return
         previousChangeKey.current = `${change.day}-${change.hour}-${props.event}`
         props.moveCallBack(change)
-        pan.setValue({ x: gestureState.dx, y: gestureState.dy })
       },
       onPanResponderRelease: (_e, gestureState) => {
-        const xUnit = (cellWidth - 50) / 4.5
-        const xDif = gestureState.moveX - gestureState.x0
-        const xUnits = Math.floor(xDif / xUnit + 0.5)
-
-        const yUnit = cellHeight
-        const yDif = gestureState.moveY - gestureState.y0
-        var yUnits = Math.floor((4 * yDif) / yUnit + 0.5)
-        yUnits = yUnits / 4
-        yUnits = ~~yUnits / 2
-
-        pan.setValue({ x: xUnits * xUnit, y: yUnit * yUnits })
-        pan.flattenOffset()
-        const change = { day: xUnits, hour: yUnits, event: props.event }
+        setOpacity(1)
+        const change = getChangedInformation(gestureState)
         props.moveCallBack(change)
       },
     }),
   ).current
 
-  const day = props.touchableOpacityProps.key.substring(0, 2)
-  const days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
-  const dayDif = days.indexOf(day)
-  const marginLeftInPercent = dayDif * 14.28
-  const minusLeft = dayDif * 7.14
-  var widthCss = 0.1428 * cellWidth - 9.14
-  var leftCellCss = (marginLeftInPercent * cellWidth) / 100 - minusLeft
-  const numberOfThisTimeEvent = getCountOfEventsAtEvent(props.event, props.events)
-  var marginLeftInCell =
-    (getOrderOfEvent(props.event, props.events) * widthCss) / numberOfThisTimeEvent
-  widthCss = widthCss / numberOfThisTimeEvent - 3
-
-  if (Object.keys(props.dateRange).length == 1) {
-    widthCss = widthCss * 7 + 28
-    leftCellCss = 0
-  }
-
   return (
     <Animated.View
+      ref={viewRef}
+      onLayout={() => {
+        if (viewRef.current) {
+          viewRef.current.measure((x, y, width, height, pageX, pageY) => {
+            pageCoords = { x: pageX + width / 2, y: pageY + height / 2 }
+          })
+        }
+      }}
       style={[
         (props.touchableOpacityProps && props.touchableOpacityProps.style) || styles.box,
         {
-          //   marginLeft: leftCellCss + marginLeftInCell + 3,
-          //   width: widthCss,
-          transform: [{ translateX: pan.x }, { translateY: pan.y }],
-          //   backgroundColor: props.event.color,
+          opacity,
         },
       ]}
       {...panResponder.panHandlers}
