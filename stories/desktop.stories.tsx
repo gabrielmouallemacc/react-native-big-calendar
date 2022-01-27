@@ -27,6 +27,7 @@ storiesOf('showcase - Desktop', module)
   .add('day mode', () => (
     <View style={styles.desktop}>
       <Calendar
+        moveCallBack={() => {}}
         height={SCREEN_HEIGHT}
         events={events}
         onPressEvent={(event) => alert(event.title)}
@@ -38,6 +39,7 @@ storiesOf('showcase - Desktop', module)
   .add('3days mode', () => (
     <View style={styles.desktop}>
       <Calendar
+        moveCallBack={() => {}}
         height={SCREEN_HEIGHT}
         events={events}
         onPressEvent={(event) => alert(event.title)}
@@ -67,6 +69,7 @@ storiesOf('showcase - Desktop', module)
     return (
       <View style={styles.desktop}>
         <Calendar
+          moveCallBack={() => {}}
           mode="month"
           height={SCREEN_HEIGHT}
           events={[
@@ -88,6 +91,7 @@ storiesOf('showcase - Desktop', module)
     return (
       <View style={styles.desktop}>
         <Calendar
+          moveCallBack={() => {}}
           mode="month"
           height={SCREEN_HEIGHT}
           isRTL
@@ -103,6 +107,7 @@ storiesOf('showcase - Desktop', module)
     return (
       <View style={styles.desktop}>
         <Calendar
+          moveCallBack={() => {}}
           mode="month"
           height={SCREEN_HEIGHT}
           events={state.events}
@@ -117,6 +122,7 @@ storiesOf('showcase - Desktop', module)
     return (
       <View style={styles.desktop}>
         <Calendar
+          moveCallBack={() => {}}
           mode="month"
           height={SCREEN_HEIGHT}
           events={state.events}
@@ -130,6 +136,7 @@ storiesOf('showcase - Desktop', module)
   .add('event cell style', () => (
     <View style={styles.desktop}>
       <Calendar
+        moveCallBack={() => {}}
         height={SCREEN_HEIGHT}
         events={events}
         eventCellStyle={(event) => {
@@ -151,6 +158,7 @@ storiesOf('showcase - Desktop', module)
       <View style={styles.desktop}>
         <Control {...props} />
         <Calendar
+          moveCallBack={() => {}}
           height={SCREEN_HEIGHT - CONTROL_HEIGHT}
           events={events}
           date={date.toDate()}
@@ -161,12 +169,17 @@ storiesOf('showcase - Desktop', module)
   })
   .add('scroll to some time', () => (
     <View style={styles.desktop}>
-      <Calendar height={SCREEN_HEIGHT} events={events} scrollOffsetMinutes={300} />
+      <Calendar
+        height={SCREEN_HEIGHT}
+        events={events}
+        scrollOffsetMinutes={300}
+        moveCallBack={() => {}}
+      />
     </View>
   ))
   .add('week start on Monday', () => (
     <View style={styles.desktop}>
-      <Calendar height={SCREEN_HEIGHT} events={events} weekStartsOn={1} />
+      <Calendar height={SCREEN_HEIGHT} events={events} weekStartsOn={1} moveCallBack={() => {}} />
     </View>
   ))
   .add('all day event', () => {
@@ -191,7 +204,12 @@ storiesOf('showcase - Desktop', module)
 
     return (
       <View style={styles.desktop}>
-        <Calendar height={SCREEN_HEIGHT} events={_events} weekStartsOn={1} />
+        <Calendar
+          height={SCREEN_HEIGHT}
+          events={_events}
+          weekStartsOn={1}
+          moveCallBack={() => {}}
+        />
       </View>
     )
   })
@@ -203,6 +221,7 @@ storiesOf('showcase - Desktop', module)
           events={events}
           onPressDateHeader={(date) => alert(date)}
           mode="3days"
+          moveCallBack={() => {}}
         />
       </View>
     )
@@ -210,25 +229,25 @@ storiesOf('showcase - Desktop', module)
   .add('locale', () => {
     return (
       <View style={styles.desktop}>
-        <Calendar locale="ja" height={SCREEN_HEIGHT} events={events} />
+        <Calendar locale="ja" height={SCREEN_HEIGHT} events={events} moveCallBack={() => {}} />
       </View>
     )
   })
   .add('AM/PM format', () => {
     return (
       <View style={styles.desktop}>
-        <Calendar ampm height={SCREEN_HEIGHT} events={events} />
+        <Calendar ampm height={SCREEN_HEIGHT} events={events} moveCallBack={() => {}} />
       </View>
     )
   })
   .add('Hidden Now indicator', () => (
     <View style={styles.desktop}>
-      <Calendar height={SCREEN_HEIGHT} events={events} hideNowIndicator />
+      <Calendar height={SCREEN_HEIGHT} events={events} hideNowIndicator moveCallBack={() => {}} />
     </View>
   ))
   .add('More overlap padding', () => (
     <View style={styles.desktop}>
-      <Calendar height={SCREEN_HEIGHT} events={events} overlapOffset={70} />
+      <Calendar height={SCREEN_HEIGHT} events={events} overlapOffset={70} moveCallBack={() => {}} />
     </View>
   ))
   .add('RTL', () => {
@@ -237,20 +256,32 @@ storiesOf('showcase - Desktop', module)
     }, [])
     return (
       <View style={styles.desktop}>
-        <Calendar locale="he" height={SCREEN_HEIGHT} events={events} isRTL />
+        <Calendar
+          locale="he"
+          height={SCREEN_HEIGHT}
+          events={events}
+          isRTL
+          moveCallBack={() => {}}
+        />
       </View>
     )
   })
   .add('Custom Event Component renderer', () => {
     return (
       <View style={styles.desktop}>
-        <Calendar height={SCREEN_HEIGHT} renderEvent={customEventRenderer} events={events} />
+        <Calendar
+          height={SCREEN_HEIGHT}
+          renderEvent={customEventRenderer}
+          events={events}
+          moveCallBack={() => {}}
+        />
       </View>
     )
   })
   .add('Custom week length', () => (
     <View style={styles.desktop}>
       <Calendar
+        moveCallBack={() => {}}
         height={SCREEN_HEIGHT}
         events={events}
         mode={'custom'}
@@ -262,6 +293,7 @@ storiesOf('showcase - Desktop', module)
   .add('Event spanning multiple days', () => (
     <View style={styles.desktop}>
       <Calendar
+        moveCallBack={() => {}}
         height={SCREEN_HEIGHT}
         events={[
           {
@@ -285,6 +317,7 @@ storiesOf('showcase - Desktop', module)
     return (
       <View style={styles.desktop}>
         <Calendar
+          moveCallBack={() => {}}
           height={SCREEN_HEIGHT}
           events={state.events}
           onPressEvent={(event) => alert(event.title)}
@@ -306,6 +339,7 @@ storiesOf('showcase - Desktop', module)
     return (
       <View style={[styles.desktop, { backgroundColor: '#333' }]}>
         <Calendar
+          moveCallBack={() => {}}
           height={SCREEN_HEIGHT}
           events={state.events}
           onPressEvent={(event) => alert(event.title)}
@@ -320,6 +354,7 @@ storiesOf('showcase - Desktop', module)
     return (
       <View style={[styles.desktop]}>
         <Calendar
+          moveCallBack={() => {}}
           height={SCREEN_HEIGHT}
           events={state.events}
           onPressEvent={(event) => alert(event.title)}
@@ -334,6 +369,7 @@ storiesOf('showcase - Desktop', module)
     return (
       <View style={[styles.desktop]}>
         <Calendar
+          moveCallBack={() => {}}
           height={SCREEN_HEIGHT}
           events={state.events}
           onPressEvent={(event) => alert(event.title)}
