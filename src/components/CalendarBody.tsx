@@ -57,6 +57,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
   moveCallBack: any
+  disableDrag?: boolean
 }
 
 function _CalendarBody<T extends ICalendarEventBase>({
@@ -80,6 +81,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponentStyle = {},
   hourStyle = {},
   moveCallBack,
+  disableDrag,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
   const { now } = useNow(!hideNowIndicator)
@@ -156,14 +158,14 @@ function _CalendarBody<T extends ICalendarEventBase>({
         ]}
         ref={scrollView}
         scrollEventThrottle={32}
-        {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
+        {...(Platform.OS !== 'web' ? (disableDrag ? panResponder.panHandlers : {}) : {})}
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled
         contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
       >
         <View
           style={[u['flex-1'], theme.isRTL ? u['flex-row-reverse'] : u['flex-row']]}
-          {...(Platform.OS === 'web' ? panResponder.panHandlers : {})}
+          {...(Platform.OS === 'web' ? (disableDrag ? panResponder.panHandlers : {}) : {})}
         >
           <View style={[u['z-20'], u['w-50']]}>
             {hours.map((hour) => (

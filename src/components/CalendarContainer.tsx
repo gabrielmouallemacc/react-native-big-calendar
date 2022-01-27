@@ -93,6 +93,7 @@ export interface CalendarContainerProps<T extends ICalendarEventBase> {
   hourStyle?: TextStyle
   showAllDayEventCell?: boolean
   moveCallBack: any
+  disableDrag?: boolean
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -134,6 +135,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   hourStyle = {},
   showAllDayEventCell = true,
   moveCallBack = () => console.log('moveCallBack'),
+  disableDrag = false,
 }: CalendarContainerProps<T>) {
   const [targetDate, setTargetDate] = React.useState(dayjs(date))
 
@@ -278,6 +280,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         headerComponentStyle={headerComponentStyle}
         hourStyle={hourStyle}
         moveCallBack={moveCallBack}
+        disableDrag={disableDrag}
       />
     </React.Fragment>
   )
