@@ -55,8 +55,8 @@ storiesOf('showcase - Desktop', module)
           events={state.events}
           onPressEvent={(event) => alert(event.title)}
           onPressCell={state.addEvent}
-          moveCallBack={(event: any) =>
-            console.log('you moved this event ' + event.day + 'days and ' + event.hour + 'hours')
+          moveCallBack={(data: any) =>
+            console.log('you moved this event ' + data.day + 'days and ' + data.hour + 'hours')
           }
         />
       </View>
