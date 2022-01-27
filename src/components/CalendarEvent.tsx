@@ -28,6 +28,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   renderEvent?: EventRenderer<T>
   ampm: boolean
   moveCallBack: any
+  isMovingCallback: any
   events: any[]
   dateRange: dayjs.Dayjs[]
 }
@@ -43,6 +44,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   renderEvent,
   ampm,
   moveCallBack,
+  isMovingCallback,
   events,
   dateRange,
 }: CalendarEventProps<T>) {
@@ -83,6 +85,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
       touchableOpacityProps={touchableOpacityProps}
       textColor={textColor}
       moveCallBack={moveCallBack}
+      isMovingCallback={isMovingCallback}
       events={events}
       dateRange={dateRange}
     />

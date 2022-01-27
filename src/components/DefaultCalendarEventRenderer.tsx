@@ -13,6 +13,7 @@ interface DefaultCalendarEventRendererProps<T extends ICalendarEventBase> {
   textColor: string
   ampm: boolean
   moveCallBack: any
+  isMovingCallback: any
   events: any[]
   dateRange: dayjs.Dayjs[]
 }
@@ -23,6 +24,7 @@ export function DefaultCalendarEventRenderer<T extends ICalendarEventBase>({
   showTime = true,
   textColor,
   moveCallBack,
+  isMovingCallback,
   events,
   dateRange,
 }: DefaultCalendarEventRendererProps<T>) {
@@ -33,6 +35,7 @@ export function DefaultCalendarEventRenderer<T extends ICalendarEventBase>({
     <Draggable
       touchableOpacityProps={touchableOpacityProps}
       moveCallBack={moveCallBack}
+      isMovingCallback={isMovingCallback}
       event={event}
       events={events}
       dateRange={dateRange}

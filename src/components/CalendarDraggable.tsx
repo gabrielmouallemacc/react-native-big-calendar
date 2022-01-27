@@ -44,11 +44,13 @@ export const Draggable = (props: any) => {
         if (previousChangeKey.current === `${change.day}-${change.hour}-${props.event}`) return
         previousChangeKey.current = `${change.day}-${change.hour}-${props.event}`
         props.moveCallBack(change)
+        props.isMovingCallback(true)
       },
       onPanResponderRelease: (_e, gestureState) => {
         setOpacity(1)
         const change = getChangedInformation(gestureState)
         props.moveCallBack(change)
+        props.isMovingCallback(false)
       },
     }),
   ).current
@@ -58,7 +60,7 @@ export const Draggable = (props: any) => {
       style={[
         (props.touchableOpacityProps && props.touchableOpacityProps.style) || styles.box,
         {
-          opacity,
+          opacity: props.event?.moving ? 0.25 : opacity,
         },
       ]}
       {...panResponder.panHandlers}

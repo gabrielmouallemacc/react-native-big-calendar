@@ -66,7 +66,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   dateRange,
   style,
   onPressCell,
-  events,
+  events: _events,
   onPressEvent,
   eventCellStyle,
   calendarCellStyle,
@@ -87,6 +87,10 @@ function _CalendarBody<T extends ICalendarEventBase>({
   const { now } = useNow(!hideNowIndicator)
   const layoutProps = React.useRef({ x: 0, y: 0, width: 500, height: 1000 })
   const [calculatedWidth, setCalculatedWidth] = React.useState(400)
+  const [isMoving, setIsMoving] = React.useState<boolean>(false)
+  const [movingEvent, setMovingEvent] = React.useState<any>()
+
+  const events = movingEvent && isMoving ? [..._events, movingEvent] : _events
 
   React.useEffect(() => {
     if (scrollView.current && scrollOffsetMinutes && Platform.OS !== 'ios') {
@@ -121,7 +125,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
     layoutProps.current = { x, y, width, height }
   }
 
-  const _renderMappedEvent = (event: T) => (
+  const _renderMappedEvent = (event: any) => (
     <CalendarEvent
       key={`${event.start}${event.title}${event.end}`}
       event={event}
@@ -133,7 +137,28 @@ function _CalendarBody<T extends ICalendarEventBase>({
       overlapOffset={overlapOffset}
       renderEvent={renderEvent}
       ampm={ampm}
-      moveCallBack={moveCallBack}
+      moveCallBack={(data: any) => {
+        if (data.day !== 0 || data.hour !== 0) {
+          var addMinutes = data.hour % 1 ? 30 : 0
+          if (data.hour < 0) {
+            addMinutes = addMinutes * -1
+          }
+
+          var start = new Date(data.event.start.toISOString())
+          start.setDate(start.getDate() + data.day)
+          start.setHours(start.getHours() + data.hour)
+          start.setMinutes(start.getMinutes() + addMinutes)
+          var end = new Date(data.event.end.toISOString())
+          end.setDate(end.getDate() + data.day)
+          end.setHours(end.getHours() + data.hour)
+          end.setMinutes(end.getMinutes() + addMinutes)
+          setMovingEvent({ ...data.event, start, end, moving: true })
+        } else {
+          setMovingEvent(null)
+        }
+        moveCallBack(data)
+      }}
+      isMovingCallback={(isMoving: boolean) => setIsMoving(isMoving)}
       events={events}
       dateRange={dateRange}
     />
@@ -160,7 +185,8 @@ function _CalendarBody<T extends ICalendarEventBase>({
         scrollEventThrottle={32}
         {...(Platform.OS !== 'web' ? (disableDrag ? panResponder.panHandlers : {}) : {})}
         showsVerticalScrollIndicator={false}
-        nestedScrollEnabled
+        nestedScrollEnabled={!isMoving}
+        scrollEnabled={!isMoving}
         contentOffset={Platform.OS === 'ios' ? { x: 0, y: scrollOffsetMinutes } : { x: 0, y: 0 }}
       >
         <View
