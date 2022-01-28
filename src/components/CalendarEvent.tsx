@@ -6,6 +6,7 @@ import { useCalendarTouchableOpacityProps } from '../hooks/useCalendarTouchableO
 import { EventCellStyle, EventRenderer, ICalendarEventBase } from '../interfaces'
 import { useTheme } from '../theme/ThemeContext'
 import { DAY_MINUTES, getRelativeTopInDay, getStyleForOverlappingEvent, typedMemo } from '../utils'
+import { Draggable } from './CalendarDraggable'
 import { DefaultCalendarEventRenderer } from './DefaultCalendarEventRenderer'
 
 const getEventCellPositionStyle = (start: Date, end: Date) => {
@@ -74,7 +75,26 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   }, [eventCount, palettes])
 
   if (renderEvent) {
-    return renderEvent(event, touchableOpacityProps)
+    return (
+      <Draggable
+        customEventStyles={[
+          getEventCellPositionStyle(event.start, event.end),
+          getStyleForOverlappingEvent(eventOrder, overlapOffset, palettes, true),
+          u['absolute'],
+        ]}
+        moveCallBack={moveCallBack}
+        isMovingCallback={isMovingCallback}
+        event={event}
+        events={events}
+        dateRange={dateRange}
+        renderEvent={true}
+      >
+        {renderEvent(event, {
+          onPress: touchableOpacityProps.onPress,
+          style: { width: '100%', height: '100%' },
+        })}
+      </Draggable>
+    )
   }
 
   return (

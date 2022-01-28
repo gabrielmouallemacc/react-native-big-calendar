@@ -37,7 +37,7 @@ export type HorizontalDirection = 'RIGHT' | 'LEFT'
 
 export type EventRenderer<T extends ICalendarEventBase> = (
   event: T,
-  touchableOpacityProps: CalendarTouchableOpacityProps,
+  touchableOpacityProps: any,
 ) => JSX.Element
 
 export type HeaderRenderer<T extends ICalendarEventBase> = React.ComponentType<

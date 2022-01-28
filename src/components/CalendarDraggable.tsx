@@ -58,7 +58,8 @@ export const Draggable = (props: any) => {
   return (
     <Animated.View
       style={[
-        (props.touchableOpacityProps && props.touchableOpacityProps.style) || styles.box,
+        (props.touchableOpacityProps && props.touchableOpacityProps.style) ||
+          props.customEventStyles,
         {
           opacity: props.event?.moving ? 0.25 : opacity,
         },

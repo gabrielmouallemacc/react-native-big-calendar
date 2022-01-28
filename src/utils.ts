@@ -160,6 +160,7 @@ export function getStyleForOverlappingEvent(
   eventPosition: number,
   overlapOffset: number,
   palettes: Palette[],
+  customEvent: boolean = false,
 ) {
   let overlapStyle = {}
   const offset = overlapOffset
@@ -169,7 +170,9 @@ export function getStyleForOverlappingEvent(
   overlapStyle = {
     start: start + OVERLAP_PADDING,
     end: OVERLAP_PADDING,
-    backgroundColor: bgColors[eventPosition % bgColors.length] || bgColors[0],
+    backgroundColor: customEvent
+      ? 'transparent'
+      : bgColors[eventPosition % bgColors.length] || bgColors[0],
     zIndex,
   }
   return overlapStyle
