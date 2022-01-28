@@ -36,7 +36,7 @@ export const HourGuideCell = ({
         style={[
           u['border-l'],
           u['border-b'],
-          { borderColor: theme.palette.gray['200'] },
+          { borderColor: theme.palette.gray['300'] },
           { height: cellHeight },
           { ...getCalendarCellStyle(date.toDate(), index) },
         ]}
