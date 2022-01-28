@@ -52,6 +52,7 @@ export const Draggable = (props: any) => {
         setOpacity(1)
         const change = getChangedInformation(gestureState)
         props.moveCallBack(change)
+        props.dragEndCallback(change)
         props.isMovingCallback(false)
       },
     }),

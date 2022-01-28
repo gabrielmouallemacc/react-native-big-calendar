@@ -32,6 +32,7 @@ interface CalendarEventProps<T extends ICalendarEventBase> {
   isMovingCallback: any
   events: any[]
   dateRange: dayjs.Dayjs[]
+  dragEndCallback: any
 }
 
 function _CalendarEvent<T extends ICalendarEventBase>({
@@ -48,6 +49,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
   isMovingCallback,
   events,
   dateRange,
+  dragEndCallback,
 }: CalendarEventProps<T>) {
   const theme = useTheme()
 
@@ -84,6 +86,7 @@ function _CalendarEvent<T extends ICalendarEventBase>({
         ]}
         moveCallBack={moveCallBack}
         isMovingCallback={isMovingCallback}
+        dragEndCallback={dragEndCallback}
         event={event}
         events={events}
         dateRange={dateRange}

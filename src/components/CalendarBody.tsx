@@ -55,7 +55,7 @@ interface CalendarBodyProps<T extends ICalendarEventBase> {
   headerComponent?: React.ReactElement | null
   headerComponentStyle?: ViewStyle
   hourStyle?: TextStyle
-  moveCallBack: any
+  dragEndCallback: any
   disableDrag?: boolean
 }
 
@@ -79,7 +79,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
   headerComponent = null,
   headerComponentStyle = {},
   hourStyle = {},
-  moveCallBack,
+  dragEndCallback,
   disableDrag,
 }: CalendarBodyProps<T>) {
   const scrollView = React.useRef<ScrollView>(null)
@@ -126,7 +126,7 @@ function _CalendarBody<T extends ICalendarEventBase>({
 
   const _renderMappedEvent = (event: any) => (
     <CalendarEvent
-      key={`${event.start}${event.title}${event.end}`}
+      key={`${event?.moving}${event.start}${event.title}${event.end}`}
       event={event}
       onPressEvent={onPressEvent}
       eventCellStyle={eventCellStyle}
@@ -149,9 +149,9 @@ function _CalendarBody<T extends ICalendarEventBase>({
         } else {
           setMovingEvent(null)
         }
-        moveCallBack(data)
       }}
       isMovingCallback={(isMoving: boolean) => setIsMoving(isMoving)}
+      dragEndCallback={dragEndCallback}
       events={events}
       dateRange={dateRange}
     />
