@@ -18,7 +18,6 @@ import {
   getOrderOfEvent,
   getRelativeTopInDay,
   hours,
-  isToday,
   typedMemo,
 } from '../utils'
 import { CalendarEvent } from './CalendarEvent'
