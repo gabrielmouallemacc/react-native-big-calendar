@@ -37,6 +37,9 @@ export const Draggable = (props: any) => {
 
   const panResponder = useRef(
     PanResponder.create({
+      onPanResponderGrant: () => {
+        props.isMovingCallback(true)
+      },
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (_e, gestureState) => {
         setOpacity(0.25)
@@ -44,7 +47,6 @@ export const Draggable = (props: any) => {
         if (previousChangeKey.current === `${change.day}-${change.hour}-${props.event}`) return
         previousChangeKey.current = `${change.day}-${change.hour}-${props.event}`
         props.moveCallBack(change)
-        props.isMovingCallback(true)
       },
       onPanResponderRelease: (_e, gestureState) => {
         setOpacity(1)
