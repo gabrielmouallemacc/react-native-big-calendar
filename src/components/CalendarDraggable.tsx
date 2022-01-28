@@ -71,19 +71,19 @@ export const Draggable = (props: any) => {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  titleText: {
-    fontSize: 14,
-    lineHeight: 24,
-    fontWeight: 'bold',
-  },
-  box: {
-    height: 100,
-    width: 100,
-    backgroundColor: 'blue',
-    borderRadius: 5,
-  },
-})
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//   },
+//   titleText: {
+//     fontSize: 14,
+//     lineHeight: 24,
+//     fontWeight: 'bold',
+//   },
+//   box: {
+//     height: 100,
+//     width: 100,
+//     backgroundColor: 'blue',
+//     borderRadius: 5,
+//   },
+// })
