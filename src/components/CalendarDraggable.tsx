@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Animated, PanResponder, PanResponderGestureState, StyleSheet } from 'react-native'
+import { Animated, PanResponder, PanResponderGestureState } from 'react-native'
 
 import { widthContext } from './CalendarBody'
 
