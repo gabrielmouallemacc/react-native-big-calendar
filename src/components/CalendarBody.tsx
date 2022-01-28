@@ -138,19 +138,13 @@ function _CalendarBody<T extends ICalendarEventBase>({
       ampm={ampm}
       moveCallBack={(data: any) => {
         if (data.day !== 0 || data.hour !== 0) {
-          var addMinutes = data.hour % 1 ? 30 : 0
-          if (data.hour < 0) {
-            addMinutes = addMinutes * -1
-          }
-
+          const hoursValueOf = data.hour * 3.6e6
           var start = new Date(data.event.start.toISOString())
           start.setDate(start.getDate() + data.day)
-          start.setHours(start.getHours() + data.hour)
-          start.setMinutes(start.getMinutes() + addMinutes)
+          start = new Date(start.valueOf() + hoursValueOf)
           var end = new Date(data.event.end.toISOString())
           end.setDate(end.getDate() + data.day)
-          end.setHours(end.getHours() + data.hour)
-          end.setMinutes(end.getMinutes() + addMinutes)
+          end = new Date(end.valueOf() + hoursValueOf)
           setMovingEvent({ ...data.event, start, end, moving: true })
         } else {
           setMovingEvent(null)
