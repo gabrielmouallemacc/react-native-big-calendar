@@ -23,7 +23,7 @@ export const Draggable = (props: any) => {
   const previousChangeKey = useRef<string>(`0-0-${props.event.title}`)
 
   const getChangedInformation = (gestureState: PanResponderGestureState) => {
-    const xUnit = (cellWidth - 50) / 3.5
+    const xUnit = cellWidth / 2.5
     const xDif = gestureState.moveX - gestureState.x0
     const xUnits = Math.floor(xDif / xUnit + 0.5)
 
